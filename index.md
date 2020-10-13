@@ -1,37 +1,45 @@
-## Welcome to GitHub Pages
+# utterances-oauth.go
 
-You can use the [editor on GitHub](https://github.com/GizmoOAO/utterances-oauth.go/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+[utterances](https://github.com/utterance) 的非官方 Golang 实现
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+[![Build Status](https://drone.liuli.lol/api/badges/GizmoOAO/utterances-oauth.go/status.svg)](https://drone.liuli.lol/GizmoOAO/utterances-oauth.go)
 
-### Markdown
+中文 | [English](https://github.com/GizmoOAO/utterances-oauth.go/blob/main/README-en.md)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+# 安装与使用
 
-```markdown
-Syntax highlighted code block
+## 配置
 
-# Header 1
-## Header 2
-### Header 3
+使用前需要在执行目录创建名为 `.env` 的文件. 文件的值请参考下表: [例子](https://github.com/GizmoOAO/utterances-oauth.go/blob/main/.env.example)
 
-- Bulleted
-- List
+- BOT_TOKEN: 创建 issues 时使用的 Github 个人令牌, [点这创建](https://github.com/settings/tokens/new?scopes=public_repo)
+- CLIENT_ID: [GitHub OAuth web application flow](https://developer.github.com/v3/oauth/#web-application-flow) 使用的 `ClientID`, 创建 Github App 后可以获得.
+- CLIENT_SECRET: [GitHub OAuth web application flow](https://developer.github.com/v3/oauth/#web-application-flow) 使用的 `ClientSecret`, 创建 Github App 后可以获得.
+- STATE_PASSWORD: 32 位密码, 用于加密 `state`, [点这创建](https://lastpass.com/generatepassword.php).
+- ORIGINS: 来源域列表, 用于 [CORS](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS), 多个来源域使用英文半角逗号分隔.
 
-1. Numbered
-2. List
+## 从源码安装
 
-**Bold** and _Italic_ and `Code` text
+编译非常简单, 只需要安装好 [Go](https://golang.org/) , 然后执行 `go build` 就可以完成编译. 但在运行前你需要修改好 `.env` 文件.
 
-[Link](url) and ![Image](src)
+```bash
+git clone https://github.com/GizmoOAO/utterances-oauth.go.git
+cd utterances-oauth.go
+go build
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## 使用 Docker
 
-### Jekyll Themes
+使用 Docker 的方式运行非常简单, 只需要将 `docker-compose.yaml` 文件上传到安装了 Docker 的服务器, 执行下面的命令就可以成功运行.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/GizmoOAO/utterances-oauth.go/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+```bash
+docker-compose up -d
+```
 
-### Support or Contact
+# 感谢
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+- [utterance](https://github.com/utterance)
+
+# 许可证
+
+MIT
