@@ -1,0 +1,25 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: build
+    image: golang:1.15-alpine
+    environment:
+      GOOS: linux
+      GOARCH: amd64
+    commands:
+      - go build -ldflags "-s -w" -o="goapp"
+
+  - name: docker build & push
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo:
+        from_secret: docker_repo
+      registry:
+        from_secret: docker_registry
+      auto_tag: true

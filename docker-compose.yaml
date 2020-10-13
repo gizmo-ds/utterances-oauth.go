@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  utterances-oauth-go:
+    image: gizmooao/utterances-oauth-go
+    restart: always
+    environment:
+      - GIN_MODE=release
+    ports:
+      - '80:5000'
+    env_file:
+      - '.env'
