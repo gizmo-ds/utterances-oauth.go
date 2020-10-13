@@ -54,14 +54,18 @@ func AuthorizedHandler(c *gin.Context) {
 	values.Set("utterances", token.AccessToken)
 	_url.RawQuery = values.Encode()
 
-	http.SetCookie(c.Writer, &http.Cookie{
+	_cookie := http.Cookie{
 		Name:     "token",
 		Value:    url.QueryEscape(token.AccessToken),
 		Path:     "/token",
 		Secure:   true,
 		HttpOnly: true,
 		Expires:  token.Expiry,
-	})
+		SameSite: http.SameSiteNoneMode,
+	}
+	http.SetCookie(c.Writer, &_cookie)
+
+	log.Println(_cookie.String())
 
 	c.Redirect(http.StatusFound, _url.String())
 }

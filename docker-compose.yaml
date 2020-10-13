@@ -2,7 +2,7 @@ version: '2'
 
 services:
   utterances-oauth-go:
-    image: gizmooao/utterances-oauth-go
+    image: gizmooao/utterances-oauth-go:latest
     restart: always
     environment:
       - GIN_MODE=release
