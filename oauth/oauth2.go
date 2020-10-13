@@ -11,8 +11,10 @@ import (
 	"golang.org/x/oauth2/github"
 )
 
-func getConfig() *oauth2.Config {
-	return &oauth2.Config{
+var config *oauth2.Config
+
+func init() {
+	config = &oauth2.Config{
 		ClientID:     os.Getenv("CLIENT_ID"),
 		ClientSecret: os.Getenv("CLIENT_SECRET"),
 		Endpoint:     github.Endpoint,
@@ -20,15 +22,15 @@ func getConfig() *oauth2.Config {
 }
 
 func AuthURL(state string) string {
-	return getConfig().AuthCodeURL(state)
+	return config.AuthCodeURL(state)
 }
 
 func AccessToken(ctx context.Context, code string) (token *oauth2.Token, err error) {
-	return getConfig().Exchange(ctx, code)
+	return config.Exchange(ctx, code)
 }
 
 func Client(ctx context.Context, accessToken string) *http.Client {
-	return getConfig().Client(ctx, &oauth2.Token{
+	return config.Client(ctx, &oauth2.Token{
 		AccessToken: accessToken,
 		TokenType:   "Bearer",
 	})

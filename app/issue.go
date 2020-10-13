@@ -5,9 +5,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	github_api "uapi/github-api"
 	"uapi/oauth"
+
+	"github.com/gin-gonic/gin"
 )
 
 func IssueHandler(c *gin.Context) {
@@ -15,7 +16,7 @@ func IssueHandler(c *gin.Context) {
 		Title string `json:"title" binding:"required"`
 		Body  string `json:"body" binding:"required"`
 	}
-	if err := c.ShouldBind(&form); err != nil {
+	if err := c.ShouldBindJSON(&form); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
