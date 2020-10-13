@@ -3,6 +3,8 @@
 [utterances](https://github.com/utterance) 的非官方 Golang 实现
 
 [![Build Status](https://drone.liuli.lol/api/badges/GizmoOAO/utterances-oauth.go/status.svg)](https://drone.liuli.lol/GizmoOAO/utterances-oauth.go)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/GizmoOAO/utterances-oauth.go/main)
+[![GitHub](https://img.shields.io/github/license/GizmoOAO/utterances-oauth.go)](./LICENSE)
 
 中文 | [English](./README-en.md)
 
