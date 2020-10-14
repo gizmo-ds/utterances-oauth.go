@@ -1,15 +1,13 @@
 package app
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"strings"
 	"time"
 
-	"uapi/app/middleware"
-
-	"log"
-
+	"github.com/GizmoOAO/ginx"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
@@ -22,7 +20,7 @@ func Start() {
 
 func RegisterRouter() *gin.Engine {
 	app := gin.New()
-	app.Use(middleware.Error())
+	app.Use(ginx.Ginx())
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: strings.Split(os.Getenv("ORIGINS"), ","),
 		AllowMethods: []string{http.MethodPost, http.MethodGet, http.MethodOptions},

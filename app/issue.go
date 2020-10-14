@@ -1,6 +1,7 @@
 package app
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"strings"
@@ -8,6 +9,7 @@ import (
 	github_api "uapi/github-api"
 	"uapi/oauth"
 
+	"github.com/GizmoOAO/ginx"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,25 +18,16 @@ func IssueHandler(c *gin.Context) {
 		Title string `json:"title" binding:"required"`
 		Body  string `json:"body" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&form); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	ginx.ShouldBindJSON(c, &form)
 
 	authorization := strings.Fields(c.GetHeader("Authorization"))
 	if len(authorization) != 2 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": `"Authorization" header is required`,
-		})
-		return
+		ginx.R(http.StatusBadRequest, errors.New(`"Authorization" header is required`))
 	}
 
 	client := oauth.Client(c, authorization[1])
 	if statusCode, err := github_api.User(client); err != nil || statusCode != http.StatusOK {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "unauthorized",
-		})
-		return
+		ginx.R(http.StatusUnauthorized, errors.New("unauthorized"))
 	}
 
 	issue := github_api.Issue{
@@ -52,10 +45,7 @@ func IssueHandler(c *gin.Context) {
 	body, code, header, err := github_api.CreateIssue(client, issue)
 	if err != nil {
 		log.Println(err)
-		c.JSON(http.StatusServiceUnavailable, gin.H{
-			"error": "unable to post issue to GitHub",
-		})
-		return
+		ginx.R(http.StatusServiceUnavailable, errors.New("unable to post issue to GitHub"))
 	}
 
 	c.Header("Content-Type", header.Get("Content-Type"))

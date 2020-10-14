@@ -6,7 +6,6 @@ import (
 	"os"
 
 	_ "github.com/joho/godotenv/autoload"
-
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 )

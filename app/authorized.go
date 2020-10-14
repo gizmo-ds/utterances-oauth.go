@@ -1,6 +1,7 @@
 package app
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"net/url"
@@ -9,6 +10,7 @@ import (
 	"uapi/oauth"
 	"uapi/state"
 
+	"github.com/GizmoOAO/ginx"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,37 +19,24 @@ func AuthorizedHandler(c *gin.Context) {
 		Code  string `form:"code" binding:"required"`
 		State string `form:"state" binding:"required"`
 	}
-	if err := c.ShouldBindQuery(&query); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
+	ginx.ShouldBindQuery(c, &query)
+
 	_state, err := state.DecryptState(query.State)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": `"state" is invalid`,
-		})
-		return
+		ginx.R(http.StatusBadRequest, errors.New(`"state" is invalid`))
 	} else if time.Now().Unix() > _state.Expires {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": `"state" is expired`,
-		})
-		return
+		ginx.R(http.StatusBadRequest, errors.New(`"state" is expired`))
 	}
 
 	token, err := oauth.AccessToken(c, query.Code)
 	if err != nil {
 		log.Println(err)
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "unable to load token from GitHub",
-		})
-		return
+		ginx.R(http.StatusServiceUnavailable, errors.New("unable to load token from GitHub"))
 	}
 
 	_url, err := url.Parse(_state.Value)
 	if err != nil {
-		panic(err)
+		ginx.Error(err)
 	}
 
 	values := _url.Query()
