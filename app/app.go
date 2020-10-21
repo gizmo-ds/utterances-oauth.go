@@ -1,44 +1,42 @@
 package app
 
 import (
+	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"strings"
 	"time"
 
-	"github.com/GizmoOAO/ginx"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
+	"uapi/api/authorize"
+	"uapi/api/authorized"
+	"uapi/api/issue"
+	"uapi/api/token"
+
+	"github.com/gorilla/mux"
 	_ "github.com/joho/godotenv/autoload"
 )
 
 func Start() {
-	app := RegisterRouter()
-	log.Fatal(app.Run(":5000"))
-}
+	r := mux.NewRouter()
 
-func RegisterRouter() *gin.Engine {
-	app := gin.New()
-	app.Use(ginx.Ginx())
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: strings.Split(os.Getenv("ORIGINS"), ","),
-		AllowMethods: []string{http.MethodPost, http.MethodGet, http.MethodOptions},
-		AllowHeaders: []string{"Origin"},
-		ExposeHeaders: []string{
-			"X-Requested-With", "X-HTTP-Method-Override",
-			"Content-Type", "Accept",
-			"Authorization", "label",
-		},
-		AllowCredentials: true,
-		MaxAge:           24 * time.Hour,
-	}))
-	app.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "%s", "alive")
+	r.Methods(http.MethodOptions).HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
 	})
-	app.POST("/token", TokenHandler)
-	app.GET("/authorize", AuthorizeHandler)
-	app.GET("/authorized", AuthorizedHandler)
-	app.POST("/repos/:owner/:repo/issues", IssueHandler)
-	return app
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		_, _ = fmt.Fprint(w, "alive")
+	}).Methods(http.MethodGet)
+	r.HandleFunc("/token", token.Handler).Methods(http.MethodPost)
+	r.HandleFunc("/authorize", authorize.Handler).Methods(http.MethodGet)
+	r.HandleFunc("/authorized", authorized.Handler).Methods(http.MethodGet)
+	r.HandleFunc("/repos/{owner}/{repo}/issues", issue.Handler).Methods(http.MethodPost)
+
+	s := &http.Server{
+		Addr:         "0.0.0.0:5000",
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 1 * time.Second,
+		IdleTimeout:  1 * time.Minute,
+		Handler:      r,
+	}
+
+	log.Printf("Listening on %s", s.Addr)
+	log.Fatal(s.ListenAndServe())
 }

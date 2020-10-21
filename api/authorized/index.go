@@ -1,37 +1,43 @@
-package app
+package authorized
 
 import (
-	"errors"
+	"context"
 	"log"
 	"net/http"
 	"net/url"
 	"time"
 
+	"github.com/GizmoOAO/ginx"
+	"github.com/gin-gonic/gin/binding"
 	"uapi/oauth"
 	"uapi/state"
-
-	"github.com/GizmoOAO/ginx"
-	"github.com/gin-gonic/gin"
 )
 
-func AuthorizedHandler(c *gin.Context) {
+func Handler(w http.ResponseWriter, r *http.Request) {
 	var query struct {
 		Code  string `form:"code" binding:"required"`
 		State string `form:"state" binding:"required"`
 	}
-	ginx.ShouldBindQuery(c, &query)
+	if err := binding.Query.Bind(r, &query); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	_state, err := state.DecryptState(query.State)
 	if err != nil {
-		ginx.R(http.StatusBadRequest, errors.New(`"state" is invalid`))
+		http.Error(w, `"state" is invalid`, http.StatusBadRequest)
+		return
 	} else if time.Now().Unix() > _state.Expires {
-		ginx.R(http.StatusBadRequest, errors.New(`"state" is expired`))
+		http.Error(w, `"state" is expired`, http.StatusBadRequest)
+		return
 	}
 
-	token, err := oauth.AccessToken(c, query.Code)
+	ctx := context.Background()
+	token, err := oauth.AccessToken(ctx, query.Code)
 	if err != nil {
 		log.Println(err)
-		ginx.R(http.StatusServiceUnavailable, errors.New("unable to load token from GitHub"))
+		http.Error(w, "unable to load token from GitHub", http.StatusServiceUnavailable)
+		return
 	}
 
 	_url, err := url.Parse(_state.Value)
@@ -43,7 +49,7 @@ func AuthorizedHandler(c *gin.Context) {
 	values.Set("utterances", token.AccessToken)
 	_url.RawQuery = values.Encode()
 
-	http.SetCookie(c.Writer, &http.Cookie{
+	http.SetCookie(w, &http.Cookie{
 		Name:     "token",
 		Value:    url.QueryEscape(token.AccessToken),
 		Path:     "/token",
@@ -53,5 +59,5 @@ func AuthorizedHandler(c *gin.Context) {
 		SameSite: http.SameSiteNoneMode,
 	})
 
-	c.Redirect(http.StatusFound, _url.String())
+	http.Redirect(w, r, _url.String(), http.StatusFound)
 }
