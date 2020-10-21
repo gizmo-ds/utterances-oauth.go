@@ -20,6 +20,12 @@ Create a file named `.env` at the root. File should have the following values: [
 - STATE_PASSWORD: 32 character password for encrypting state in request headers/cookies. Generate [here](https://lastpass.com/generatepassword.php).
 - ORIGINS: comma delimited list of permitted origins. For CORS.
 
+## Deploy on your own Vercel instance
+
+Click on the deploy button to get started!
+
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/GizmoOAO/utterances-oauth.go)
+
 ## Basic
 
 Building is quite easy, just make sure you have [Go](https://golang.org/) installed, and run `go build` You should be able to run the compiled executable after making required changes to `.env`

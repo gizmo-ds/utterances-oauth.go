@@ -20,6 +20,12 @@
 - STATE_PASSWORD: 32 位密码, 用于加密 `state`, [点这创建](https://lastpass.com/generatepassword.php).
 - ORIGINS: 来源域列表, 用于 [CORS](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS), 多个来源域使用英文半角逗号分隔.
 
+## 快速部署到 Vercel
+
+点击 deploy 按钮来开始你的部署！
+
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/GizmoOAO/utterances-oauth.go)
+
 ## 从源码安装
 
 编译非常简单, 只需要安装好 [Go](https://golang.org/) , 然后执行 `go build` 就可以完成编译. 但在运行前你需要修改好 `.env` 文件.
