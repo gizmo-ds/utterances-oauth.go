@@ -1,0 +1,25 @@
+{
+  "rewrites": [
+    {
+      "source": "/token",
+      "destination": "/api/token/index.go"
+    },
+    {
+      "source": "/authorize",
+      "destination": "/api/authorize/index.go"
+    },
+    {
+      "source": "/authorized",
+      "destination": "/api/authorized/index.go"
+    },
+    {
+      "source": "/repos/:owner/:repo/issues",
+      "destination": "/api/issue/index.go"
+    }
+  ],
+  "build": {
+    "env": {
+      "GO_BUILD_FLAGS": "-ldflags '-s -w'"
+    }
+  }
+}
