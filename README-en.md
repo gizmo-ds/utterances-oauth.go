@@ -2,7 +2,7 @@
 
 Unofficial [utterances](https://github.com/utterance) API in Go
 
-[![Build Status](https://drone.liuli.lol/api/badges/GizmoOAO/utterances-oauth.go/status.svg)](https://drone.liuli.lol/GizmoOAO/utterances-oauth.go)
+[![Build Status](https://cloud.drone.io/api/badges/GizmoOAO/utterances-oauth.go/status.svg)](https://cloud.drone.io/GizmoOAO/utterances-oauth.go)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/GizmoOAO/utterances-oauth.go/main)
 [![GitHub](https://img.shields.io/github/license/GizmoOAO/utterances-oauth.go)](./LICENSE)
 
