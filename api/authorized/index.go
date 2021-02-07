@@ -7,10 +7,10 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/GizmoOAO/ginx"
-	"github.com/gin-gonic/gin/binding"
 	"uapi/oauth"
 	"uapi/state"
+
+	"github.com/gin-gonic/gin/binding"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +42,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	_url, err := url.Parse(_state.Value)
 	if err != nil {
-		ginx.Error(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	values := _url.Query()

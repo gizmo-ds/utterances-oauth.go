@@ -3,10 +3,10 @@ package authorize
 import (
 	"net/http"
 
-	"github.com/GizmoOAO/ginx"
-	"github.com/gin-gonic/gin/binding"
 	"uapi/oauth"
 	"uapi/state"
+
+	"github.com/gin-gonic/gin/binding"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +20,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	_state, err := state.EncryptState(query.RedirectUri)
 	if err != nil {
-		ginx.Error(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	http.Redirect(w, r, oauth.AuthURL(_state), http.StatusFound)

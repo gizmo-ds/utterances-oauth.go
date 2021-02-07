@@ -2,19 +2,18 @@ package issue
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"regexp"
 	"strings"
 
-	"github.com/GizmoOAO/ginx"
-	"github.com/gin-gonic/gin/binding"
-	"github.com/gorilla/mux"
 	"uapi/cors"
 	github_api "uapi/github-api"
 	"uapi/oauth"
+
+	"github.com/gin-gonic/gin/binding"
+	"github.com/gorilla/mux"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -46,13 +45,13 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	authorization := strings.Fields(r.Header.Get("Authorization"))
 	if len(authorization) != 2 {
-		ginx.R(http.StatusBadRequest, errors.New(`"Authorization" header is required`))
+		http.Error(w, `"Authorization" header is required`, http.StatusBadRequest)
 	}
 
 	ctx := context.Background()
 	client := oauth.Client(ctx, authorization[1])
 	if statusCode, err := github_api.User(client); err != nil || statusCode != http.StatusOK {
-		ginx.R(http.StatusUnauthorized, errors.New("unauthorized"))
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
 	}
 
 	issue := github_api.Issue{
