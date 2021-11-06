@@ -2,7 +2,7 @@
 
 [utterances](https://github.com/utterance) API 的非官方 Golang 实现
 
-[![Build Status](https://cloud.drone.io/api/badges/GizmoOAO/utterances-oauth.go/status.svg)](https://cloud.drone.io/GizmoOAO/utterances-oauth.go)
+![Build Status](https://img.shields.io/github/workflow/status/GizmoOAO/utterances-oauth.go/docker%20build%20&%20push)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/GizmoOAO/utterances-oauth.go/main)
 [![GitHub](https://img.shields.io/github/license/GizmoOAO/utterances-oauth.go)](./LICENSE)
 
