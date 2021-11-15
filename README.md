@@ -5,6 +5,7 @@
 ![Build Status](https://img.shields.io/github/workflow/status/GizmoOAO/utterances-oauth.go/docker%20build%20&%20push)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/GizmoOAO/utterances-oauth.go/main)
 [![GitHub](https://img.shields.io/github/license/GizmoOAO/utterances-oauth.go)](./LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGizmoOAO%2Futterances-oauth.go.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGizmoOAO%2Futterances-oauth.go?ref=badge_shield)
 
 中文 | [English](./README-en.md)
 
@@ -51,3 +52,7 @@ docker-compose up -d
 # 许可证
 
 MIT
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGizmoOAO%2Futterances-oauth.go.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FGizmoOAO%2Futterances-oauth.go?ref=badge_large)
