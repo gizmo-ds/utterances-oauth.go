@@ -5,7 +5,7 @@ go 1.15
 require (
 	github.com/gin-gonic/gin v1.7.7
 	github.com/gorilla/mux v1.8.0
-	github.com/joho/godotenv v1.3.0
-	github.com/rs/cors v1.7.0
-	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
+	github.com/joho/godotenv v1.5.1
+	github.com/rs/cors v1.8.3
+	golang.org/x/oauth2 v0.5.0
 )
